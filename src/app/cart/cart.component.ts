@@ -13,7 +13,6 @@ export class CartComponent implements OnInit, OnDestroy {
   productsCost = 0;
   private activatedSubProductsChange: Subscription;
   private activatedSubCost: Subscription;
-  smallScreen = false;
 
   constructor(private cartService: CartService) {}
 
@@ -40,9 +39,5 @@ export class CartComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.activatedSubProductsChange.unsubscribe();
     this.activatedSubCost.unsubscribe();
-  }
-
-  onResize(event) {
-    this.smallScreen = event.target.innerWidth <= 1100 ? true : false;
   }
 }

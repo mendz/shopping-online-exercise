@@ -16,25 +16,9 @@
         {{ product.costPrice | currency }}
       </h4>
       <p mat-line>{{ product.description }}</p>
-      <button
-        *ngIf="smallScreen === false; else isSmallScreen"
-        mat-raised-button
-        color="warn"
-        (click)="onRemoveProduct(product.id)"
-      >
-        Remove Item <mat-icon>delete_forever</mat-icon>
+      <button mat-mini-fab color="warn" (click)="onRemoveProduct(product.id)">
+        <mat-icon>delete_forever</mat-icon>
       </button>
-      <ng-template #isSmallScreen>
-        <button
-          mat-icon-button
-          aria-label="delete icon"
-          color="warn"
-          title="Remove"
-          (click)="onRemoveProduct(product.id)"
-        >
-          <mat-icon>delete_forever</mat-icon>
-        </button>
-      </ng-template>
     </mat-list-item>
   </mat-list>
 </div>
