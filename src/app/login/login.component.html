@@ -1,0 +1,26 @@
+<div appCentered [centerText]="true">
+  <h1>Login</h1>
+  <div class="form" appCentered>
+    <mat-form-field class="full-width">
+      <input
+        required
+        matInput
+        type="text"
+        placeholder="User Name"
+        [(ngModel)]="userName"
+      />
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <input
+        required
+        matInput
+        type="password"
+        placeholder="Password"
+        [(ngModel)]="password"
+      />
+    </mat-form-field>
+    <button mat-raised-button color="primary" (click)="onLogin()">Login</button>
+  </div>
+  <p [ngStyle]="{ color: getColor() }">Please enter the correct credentials</p>
+</div>

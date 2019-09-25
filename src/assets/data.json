@@ -1,0 +1,202 @@
+[
+  {
+    "_id": "5d8b3d6edbea221b03cb1803",
+    "index": 0,
+    "guid": "2813de1e-63e2-40a1-8919-d5657f65a810",
+    "name": "dolor",
+    "description": "Ad irure incididunt ex labore anim sunt et.",
+    "imagePath": "https://picsum.photos/200",
+    "price": "136.664",
+    "dateAdded": "Thursday, March 6, 2014 7:30 PM"
+  },
+  {
+    "_id": "5d8b3d6ec16667b32f03be20",
+    "index": 1,
+    "guid": "a2e6da55-d2e2-4c05-9715-04e12008eed4",
+    "name": "amet",
+    "description": "Nulla est amet reprehenderit ipsum commodo reprehenderit duis proident amet commodo magna fugiat.",
+    "imagePath": "https://source.unsplash.com/random/200x200",
+    "price": "50.556",
+    "dateAdded": "Monday, August 6, 2018 4:45 AM"
+  },
+  {
+    "_id": "5d8b3d6e16af118086e9aa42",
+    "index": 2,
+    "guid": "e62a815e-3919-437f-ae06-ee4875a35ea9",
+    "name": "magna",
+    "description": "Aliqua consequat velit ex nisi aliquip.",
+    "imagePath": "http://placeimg.com/200/200/any",
+    "price": "170.535",
+    "dateAdded": "Sunday, May 15, 2016 6:40 PM"
+  },
+  {
+    "_id": "5d8b3d6ed697030c0f23bf1a",
+    "index": 3,
+    "guid": "030a1681-0abc-4a18-a019-99f03745f08a",
+    "name": "laborum",
+    "description": "Sit nostrud voluptate aliqua officia Lorem occaecat minim tempor ex ullamco officia duis aliqua.",
+    "imagePath": "https://source.unsplash.com/random/200x200",
+    "price": "132.794",
+    "dateAdded": "Sunday, October 16, 2016 7:47 AM"
+  },
+  {
+    "_id": "5d8b3d6e7d8f960c52ab206b",
+    "index": 4,
+    "guid": "0f6b6f51-7402-439d-8c7c-2f1404419b8c",
+    "name": "dolore",
+    "description": "Sint et ipsum magna dolore.",
+    "imagePath": "https://picsum.photos/200/200",
+    "price": "87.233",
+    "dateAdded": "Thursday, April 23, 2015 4:08 PM"
+  },
+  {
+    "_id": "5d8b3d6ec4c6d833c987ea6e",
+    "index": 5,
+    "guid": "91551510-6299-49a0-883a-92f4681853c4",
+    "name": "consequat",
+    "description": "Commodo amet anim non amet culpa incididunt qui consequat nisi.",
+    "imagePath": "https://picsum.photos/200/200",
+    "price": "73.109",
+    "dateAdded": "Monday, September 12, 2016 4:55 PM"
+  },
+  {
+    "_id": "5d8b3d6eb66045736d9ba94a",
+    "index": 6,
+    "guid": "30fa85f9-2f3b-4783-94df-b77784411923",
+    "name": "aliquip",
+    "description": "In ut Lorem reprehenderit cupidatat consectetur cupidatat do et ad cillum dolore ullamco in.",
+    "imagePath": "https://picsum.photos/200",
+    "price": "124.073",
+    "dateAdded": "Tuesday, June 10, 2014 6:00 PM"
+  },
+  {
+    "_id": "5d8b3d6e2a5fa6c82035b4cd",
+    "index": 7,
+    "guid": "99f6622e-147f-45d1-bbcf-0c7de6fb3f1e",
+    "name": "proident",
+    "description": "Incididunt ex enim incididunt consectetur dolore ad incididunt id qui commodo officia fugiat sit esse.",
+    "imagePath": "https://loremflickr.com/200/200",
+    "price": "84.327",
+    "dateAdded": "Wednesday, June 29, 2016 8:00 AM"
+  },
+  {
+    "_id": "5d8b3d6ef409cc7b2e20e5d7",
+    "index": 8,
+    "guid": "64542d8a-4a51-40db-997b-e80e72a398a4",
+    "name": "commodo",
+    "description": "Cupidatat minim irure consectetur labore id irure cupidatat culpa excepteur.",
+    "imagePath": "https://picsum.photos/200",
+    "price": "42.708",
+    "dateAdded": "Friday, April 24, 2015 10:10 PM"
+  },
+  {
+    "_id": "5d8b3d6e5662099ddab1df30",
+    "index": 9,
+    "guid": "f9622aac-686a-4009-8db9-8fe5a0cd3620",
+    "name": "sint",
+    "description": "Deserunt esse aute culpa id deserunt deserunt nulla.",
+    "imagePath": "http://placeimg.com/200/200/any",
+    "price": "85.646",
+    "dateAdded": "Friday, March 24, 2017 10:09 PM"
+  },
+  {
+    "_id": "5d8b3d6e489f63688fdb99eb",
+    "index": 10,
+    "guid": "46428cde-b2cf-48a2-903c-751386edad56",
+    "name": "deserunt",
+    "description": "Nulla ipsum esse minim irure cillum aute nostrud nisi mollit incididunt consequat.",
+    "imagePath": "https://loremflickr.com/200/200",
+    "price": "142.939",
+    "dateAdded": "Sunday, March 22, 2015 5:49 PM"
+  },
+  {
+    "_id": "5d8b3d6e8fcc18c552ac2694",
+    "index": 11,
+    "guid": "a54e5c44-4cc1-4da3-9637-c2a223859983",
+    "name": "velit",
+    "description": "Labore amet est enim minim quis elit anim aliqua culpa qui commodo deserunt irure adipisicing.",
+    "imagePath": "https://picsum.photos/200",
+    "price": "122.832",
+    "dateAdded": "Monday, February 17, 2014 3:50 PM"
+  },
+  {
+    "_id": "5d8b3d6e9d4933bca0de9ea9",
+    "index": 12,
+    "guid": "23fbb4fc-bb1b-44c6-aeab-f07bc9901d30",
+    "name": "veniam",
+    "description": "Duis laboris voluptate esse sint eiusmod.",
+    "imagePath": "http://placeimg.com/200/200/any",
+    "price": "19.048",
+    "dateAdded": "Tuesday, February 18, 2014 11:31 AM"
+  },
+  {
+    "_id": "5d8b3d6e01ade779f53d5ad3",
+    "index": 13,
+    "guid": "cf776ac3-58c9-4ea2-9df4-6eda45d6ccaa",
+    "name": "magna",
+    "description": "Fugiat enim aliquip irure mollit aute aliqua quis ex sunt qui consequat.",
+    "imagePath": "https://source.unsplash.com/random/200x200",
+    "price": "153.738",
+    "dateAdded": "Sunday, August 28, 2016 6:10 PM"
+  },
+  {
+    "_id": "5d8b3d6e99b44dae1621cb67",
+    "index": 14,
+    "guid": "3f1dbdc6-967d-48cd-b664-77a62b51c940",
+    "name": "sint",
+    "description": "Pariatur ad adipisicing proident est ipsum sit exercitation reprehenderit aliqua proident.",
+    "imagePath": "https://source.unsplash.com/random/200x200",
+    "price": "56.918",
+    "dateAdded": "Wednesday, June 11, 2014 7:21 AM"
+  },
+  {
+    "_id": "5d8b3d6eb8d21fe7295713cc",
+    "index": 15,
+    "guid": "70229c3e-a5b3-424d-9702-5d194503f8d7",
+    "name": "cupidatat",
+    "description": "Duis enim dolor enim cupidatat.",
+    "imagePath": "https://picsum.photos/200",
+    "price": "123.841",
+    "dateAdded": "Friday, July 19, 2019 12:11 AM"
+  },
+  {
+    "_id": "5d8b3d6ee58504c01951a15f",
+    "index": 16,
+    "guid": "307b27b4-b89f-463c-a879-97eefec44b6c",
+    "name": "id",
+    "description": "Dolore et et aliquip adipisicing ea voluptate ullamco.",
+    "imagePath": "http://placeimg.com/200/200/any",
+    "price": "18.79",
+    "dateAdded": "Saturday, December 1, 2018 9:14 AM"
+  },
+  {
+    "_id": "5d8b3d6ebb2a467e7c64cb93",
+    "index": 17,
+    "guid": "385fe6d0-5aa6-413f-900c-f5b213a5755a",
+    "name": "culpa",
+    "description": "Eu dolore consequat dolor est cupidatat non et cupidatat quis excepteur do.",
+    "imagePath": "https://source.unsplash.com/random/200x200",
+    "price": "20.186",
+    "dateAdded": "Wednesday, April 6, 2016 8:15 AM"
+  },
+  {
+    "_id": "5d8b3d6e1456a6ec4369b6cf",
+    "index": 18,
+    "guid": "c6d3936d-5c64-4243-a5ff-f1eec4a81d71",
+    "name": "consequat",
+    "description": "Reprehenderit eiusmod laboris do occaecat.",
+    "imagePath": "https://picsum.photos/200",
+    "price": "26.104",
+    "dateAdded": "Saturday, August 2, 2014 11:30 AM"
+  },
+  {
+    "_id": "5d8b3d6e98bc09e15ce28506",
+    "index": 19,
+    "guid": "f5c01a7c-e8de-40a7-8204-d5ff934feaa0",
+    "name": "culpa",
+    "description": "Fugiat pariatur eu occaecat eu ut eiusmod excepteur tempor qui veniam duis tempor dolore.",
+    "imagePath": "https://source.unsplash.com/random/200x200",
+    "price": "199.556",
+    "dateAdded": "Thursday, July 20, 2017 10:28 PM"
+  }
+]

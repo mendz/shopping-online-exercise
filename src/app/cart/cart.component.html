@@ -1,0 +1,40 @@
+<div appCentered>
+  <!-- will only display if there is no product -->
+  <div *ngIf="products.length === 0; else haveProducts">
+    <h1>There are no products in the cart!</h1>
+    <p>Go back <a routerLink="/">shopping!</a></p>
+  </div>
+  <ng-template #haveProducts>
+    <h3>Cost: {{ productsCost | currency }}</h3>
+  </ng-template>
+  <!-- will only display if there is at least one product -->
+  <mat-list *ngFor="let product of products">
+    <mat-list-item class="cart-item" (window:resize)="onResize($event)">
+      <img [src]="product.imagePath" alt="product avatar" matListAvatar />
+      <h4 mat-line>
+        {{ product.name | titlecase }} - ({{ product.amount }}) -
+        {{ product.costPrice | currency }}
+      </h4>
+      <p mat-line>{{ product.description }}</p>
+      <button
+        *ngIf="smallScreen === false; else isSmallScreen"
+        mat-raised-button
+        color="warn"
+        (click)="onRemoveProduct(product.id)"
+      >
+        Remove Item <mat-icon>delete_forever</mat-icon>
+      </button>
+      <ng-template #isSmallScreen>
+        <button
+          mat-icon-button
+          aria-label="delete icon"
+          color="warn"
+          title="Remove"
+          (click)="onRemoveProduct(product.id)"
+        >
+          <mat-icon>delete_forever</mat-icon>
+        </button>
+      </ng-template>
+    </mat-list-item>
+  </mat-list>
+</div>

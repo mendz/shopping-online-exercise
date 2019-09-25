@@ -1,0 +1,14 @@
+.container {
+  padding: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  /* display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 10px;
+  grid-auto-rows: 1fr; */
+}
+
+.container > * {
+  margin: 10px;
+}

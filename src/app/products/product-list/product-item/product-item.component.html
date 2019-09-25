@@ -1,0 +1,21 @@
+<mat-card class="card" style="display: flex; flex-direction: column">
+  <mat-card-header>
+    <mat-card-title>{{ product.name | titlecase }}</mat-card-title>
+    <mat-card-subtitle
+      >Date added to the store:
+      {{ product.dateAdded | date: 'HH:MM - (d.MM.yy)' }}</mat-card-subtitle
+    >
+  </mat-card-header>
+  <img mat-card-image [src]="product.imagePath" />
+  <mat-card-content>
+    <p>{{ product.description }}</p>
+  </mat-card-content>
+  <div>
+    <mat-card-actions>
+      <button mat-raised-button color="primary" (click)="addToCart()">
+        Add to cart
+      </button>
+    </mat-card-actions>
+    <mat-card-subtitle>Price: {{ product.price | currency }}</mat-card-subtitle>
+  </div>
+</mat-card>

@@ -1,0 +1,23 @@
+<mat-toolbar class="header">
+  <a routerLink="/"><span>Shopping Online</span></a>
+
+  <!-- This fills the remaining space of the current row -->
+  <span class="example-fill-remaining-space"></span>
+
+  <div *ngIf="isLoggedIn === true">
+    <button mat-stroked-button (click)="onLogout()">Log Out</button>
+    <a
+      mat-icon-button
+      color="primary"
+      aria-label="Shopping Cart Icon"
+      routerLink="cart"
+    >
+      <mat-icon
+        [matBadge]="cartItemsCount"
+        matBadgePosition="below after"
+        matBadgeColor="accent"
+        >shopping_cart</mat-icon
+      >
+    </a>
+  </div>
+</mat-toolbar>
