@@ -1,6 +1,6 @@
 [build]
    publish = "dist/shopping-store"
-   command = "npm build --prod"
+   command = "ng build --prod"
 
 # The following redirect is intended for use with most SPAs that handle
 # routing internally.
