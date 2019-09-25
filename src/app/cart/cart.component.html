@@ -9,7 +9,7 @@
   </ng-template>
   <!-- will only display if there is at least one product -->
   <mat-list *ngFor="let product of products">
-    <mat-list-item class="cart-item" (window:resize)="onResize($event)">
+    <mat-list-item class="cart-item">
       <img [src]="product.imagePath" alt="product avatar" matListAvatar />
       <h4 mat-line>
         {{ product.name | titlecase }} - ({{ product.amount }}) -
