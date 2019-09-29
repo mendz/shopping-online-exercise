@@ -1,14 +1,20 @@
 <div appCentered [centerText]="true">
   <h1>Login</h1>
-  <div class="form" appCentered>
+  <form class="form" appCentered (ngSubmit)="onSubmit()" #form="ngForm">
     <mat-form-field class="full-width">
       <input
         required
         matInput
         type="text"
         placeholder="User Name"
-        [(ngModel)]="userName"
+        ngModel
+        name="username"
+        required
+        #username="ngModel"
       />
+      <mat-error *ngIf="!username.valid">
+        Username is not <strong>valid!</strong>
+      </mat-error>
     </mat-form-field>
 
     <mat-form-field class="full-width">
@@ -17,10 +23,25 @@
         matInput
         type="password"
         placeholder="Password"
-        [(ngModel)]="password"
+        ngModel
+        name="password"
+        required
+        minlength="3"
+        #password="ngModel"
       />
+      <mat-error *ngIf="!password.valid">
+        Password is not <strong>valid!</strong>, should be at least 3
+        characters.
+      </mat-error>
     </mat-form-field>
-    <button mat-raised-button color="primary" (click)="onLogin()">Login</button>
-  </div>
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      [disabled]="!form.valid"
+    >
+      Login
+    </button>
+  </form>
   <p [ngStyle]="{ color: getColor() }">Please enter the correct credentials</p>
 </div>

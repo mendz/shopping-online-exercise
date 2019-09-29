@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -8,6 +9,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit {
+  @ViewChild('form', { static: false }) loginForm: NgForm;
   userName: string;
   password: string;
   showPermissionIssue = false;
@@ -20,10 +22,17 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  onLogin() {
-    const successLogging = this.authService.login(this.userName, this.password);
+  onLogin(userName: string, password: string) {
+    const successLogging = this.authService.login(userName, password);
     if (!successLogging) {
       this.showPermissionIssue = true;
+    }
+  }
+
+  onSubmit() {
+    if (this.loginForm.valid) {
+      const { username, password } = this.loginForm.value;
+      this.onLogin(username, password);
     }
   }
 
