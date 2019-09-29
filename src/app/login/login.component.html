@@ -12,7 +12,7 @@
         required
         #username="ngModel"
       />
-      <mat-error *ngIf="!username.valid">
+      <mat-error *ngIf="!username.valid && username.touched">
         Username is not <strong>valid!</strong>
       </mat-error>
     </mat-form-field>
@@ -29,7 +29,7 @@
         minlength="3"
         #password="ngModel"
       />
-      <mat-error *ngIf="!password.valid">
+      <mat-error *ngIf="!password.valid && username.touched">
         Password is not <strong>valid!</strong>, should be at least 3
         characters.
       </mat-error>
