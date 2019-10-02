@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
-import { NgForm } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -9,9 +9,8 @@ import { NgForm } from '@angular/forms';
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit {
-  @ViewChild('form', { static: false }) loginForm: NgForm;
-  userName: string;
-  password: string;
+  loginForm: FormGroup;
+  minPasswordLength = 4;
   showPermissionIssue = false;
 
   constructor(private authService: AuthService, private router: Router) {}
@@ -20,6 +19,18 @@ export class LoginComponent implements OnInit {
     if (this.authService.isLoggedIn) {
       this.router.navigate(['/']);
     }
+
+    this.loginForm = new FormGroup({
+      userName: new FormControl(null, Validators.required),
+      password: new FormControl(null, [
+        Validators.required,
+        Validators.minLength(this.minPasswordLength),
+      ]),
+    });
+  }
+
+  get password() {
+    return this.loginForm.get('password');
   }
 
   onLogin(userName: string, password: string) {
@@ -31,8 +42,8 @@ export class LoginComponent implements OnInit {
 
   onSubmit() {
     if (this.loginForm.valid) {
-      const { username, password } = this.loginForm.value;
-      this.onLogin(username, password);
+      const { userName, password } = this.loginForm.value;
+      this.onLogin(userName, password);
     }
   }
 

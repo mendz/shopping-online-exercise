@@ -13,7 +13,7 @@ import { ProductItemComponent } from './products/product-list/product-item/produ
 import { HeaderComponent } from './header/header.component';
 import { ProductEditComponent } from './products/product-edit/product-edit.component';
 import { CenteredDirective } from './centered.directive';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { ChartsComponent } from './charts/charts.component';
 
 @NgModule({
@@ -34,7 +34,7 @@ import { ChartsComponent } from './charts/charts.component';
     AppRoutingModule,
     BrowserAnimationsModule,
     AppMaterialModule,
-    FormsModule,
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

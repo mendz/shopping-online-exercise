@@ -1,45 +1,24 @@
 <div appCentered [centerText]="true">
   <h1>Login</h1>
-  <form class="form" appCentered (ngSubmit)="onSubmit()" #form="ngForm">
+  <form class="form" appCentered (ngSubmit)="onSubmit()" [formGroup]="loginForm">
     <mat-form-field class="full-width">
-      <input
-        required
-        matInput
-        type="text"
-        placeholder="User Name"
-        ngModel
-        name="username"
-        required
-        #username="ngModel"
-      />
-      <mat-error *ngIf="!username.valid && username.touched">
-        Username is not <strong>valid!</strong>
+      <input required matInput type="text" placeholder="User Name" formControlName="userName" />
+      <mat-error>
+        Username is not <strong>required!</strong>
       </mat-error>
     </mat-form-field>
-
     <mat-form-field class="full-width">
-      <input
-        required
-        matInput
-        type="password"
-        placeholder="Password"
-        ngModel
-        name="password"
-        required
-        minlength="3"
-        #password="ngModel"
-      />
-      <mat-error *ngIf="!password.valid && username.touched">
-        Password is not <strong>valid!</strong>, should be at least 3
+      <input required matInput type="password" placeholder="Password" formControlName="password" />
+      <mat-error *ngIf="password.hasError('required')">
+        Password is <strong>required!</strong>
+      </mat-error>
+      <mat-error *ngIf="password.hasError('minlength')">
+        Password is not <strong>valid!</strong>, should be at least
+        {{minPasswordLength}}
         characters.
       </mat-error>
     </mat-form-field>
-    <button
-      mat-raised-button
-      color="primary"
-      type="submit"
-      [disabled]="!form.valid"
-    >
+    <button mat-raised-button color="primary" type="submit" [disabled]="!loginForm.valid">
       Login
     </button>
   </form>
