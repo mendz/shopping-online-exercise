@@ -15,6 +15,7 @@ import { ProductEditComponent } from './products/product-edit/product-edit.compo
 import { CenteredDirective } from './centered.directive';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ChartsComponent } from './charts/charts.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { ChartsComponent } from './charts/charts.component';
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     AppMaterialModule,
