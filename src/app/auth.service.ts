@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
 import { ProductsService } from './products/products.service';
+import { CartService } from './cart/cart.service';
 
 @Injectable({
   providedIn: 'root',
@@ -11,17 +12,9 @@ export class AuthService {
 
   constructor(
     private router: Router,
-    private productsService: ProductsService
+    private productsService: ProductsService,
+    private cartService: CartService
   ) {}
-
-  // isAuthenticated() {
-  //   const promise = new Promise((resolve, reject) => {
-  //     setTimeout(() => {
-  //       resolve(this.isLoggedIn);
-  //     }, 800);
-  //   });
-  //   return promise;
-  // }
 
   login(userName: string, password: string) {
     if (userName === 'admin' && password === '1234') {
@@ -34,8 +27,10 @@ export class AuthService {
 
   logout() {
     this.isLoggedIn.next(false);
-    // set the products to empty array when the user logged out
+    // set the products and the cart to empty array when the user logged out
+    // TODO: maybe set the cart products to user?
     this.productsService.setProducts([]);
+    this.cartService.setCart([]);
     this.router.navigate(['/login']);
   }
 }

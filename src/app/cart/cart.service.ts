@@ -33,6 +33,12 @@ export class CartService {
     return cost;
   }
 
+  private updateProducts(cartProduct: CartProduct[]) {
+    this.cartProductsChange.next(this.cartProducts);
+    this.amountProducts.next(this.getSumProducts());
+    this.productsCost.next(this.getProductsCost());
+  }
+
   addToCart(productToAdd: CartProduct) {
     // check if the item is in the cart - currently by name
     const index = this.cartProducts.findIndex(
@@ -46,9 +52,7 @@ export class CartService {
       this.cartProducts.push(productToAdd);
     }
 
-    this.cartProductsChange.next(this.cartProducts);
-    this.amountProducts.next(this.getSumProducts());
-    this.productsCost.next(this.getProductsCost());
+    this.updateProducts(this.cartProducts);
   }
 
   removeFromCart(productId: string) {
@@ -66,8 +70,11 @@ export class CartService {
       );
       this.cartProducts = [...updatedProducts];
     }
-    this.cartProductsChange.next(this.cartProducts);
-    this.amountProducts.next(this.getSumProducts());
-    this.productsCost.next(this.getProductsCost());
+    this.updateProducts(this.cartProducts);
+  }
+
+  setCart(cartProducts: CartProduct[]) {
+    this.cartProducts = cartProducts;
+    this.updateProducts(this.cartProducts);
   }
 }
