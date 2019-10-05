@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
+import { ProductsService } from './products/products.service';
 
 @Injectable({
   providedIn: 'root',
@@ -8,7 +9,10 @@ import { Router } from '@angular/router';
 export class AuthService {
   isLoggedIn = new BehaviorSubject<boolean>(false);
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private productsService: ProductsService
+  ) {}
 
   // isAuthenticated() {
   //   const promise = new Promise((resolve, reject) => {
@@ -30,6 +34,8 @@ export class AuthService {
 
   logout() {
     this.isLoggedIn.next(false);
+    // set the products to empty array when the user logged out
+    this.productsService.setProducts([]);
     this.router.navigate(['/login']);
   }
 }
