@@ -2,15 +2,15 @@ import { Injectable } from '@angular/core';
 import { Product } from './product.model';
 import { Subject } from 'rxjs';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class ProductsService {
-  private products: Product[];
+  private products: Product[] = [];
   productsChanged = new Subject<Product[]>();
 
   constructor() {}
 
   getProducts() {
-    return [...(this.products || [])];
+    return [...this.products];
   }
 
   setProducts(products: Product[]) {

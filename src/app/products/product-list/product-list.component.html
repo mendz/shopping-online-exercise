@@ -3,5 +3,8 @@
     *ngFor="let product of products"
     [product]="product"
   ></app-product-item>
-  <mat-spinner *ngIf="isLoading"></mat-spinner>
+  <mat-spinner *ngIf="isLoading && !error"></mat-spinner>
+  <div class="error" *ngIf="error && !isLoading">
+    <p>{{ error }}</p>
+  </div>
 </div>

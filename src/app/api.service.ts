@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import data from '../assets/data.json';
-import { Product } from './products/product.model.js';
+import { Product } from './products/product.model';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
+import { ProductsService } from './products/products.service';
+import { BehaviorSubject } from 'rxjs';
 
 interface APIProduct {
   name: string;
@@ -16,9 +18,16 @@ interface APIProduct {
   providedIn: 'root',
 })
 export class ApiService {
-  constructor(private http: HttpClient) {}
+  isLoading = new BehaviorSubject<boolean>(false);
+  error = new BehaviorSubject<string>('');
+
+  constructor(
+    private http: HttpClient,
+    private productsService: ProductsService
+  ) {}
 
   fetchProducts() {
+    this.isLoading.next(true);
     return this.http
       .get<{ [key: string]: APIProduct }>(
         'https://shopping-online-exercise.firebaseio.com/products.json'
@@ -40,6 +49,16 @@ export class ApiService {
           }
           return productsArray;
         })
+      )
+      .subscribe(
+        (products: Product[]) => {
+          this.isLoading.next(false);
+          this.productsService.setProducts(products);
+        },
+        error => {
+          this.error.next(error.error.error);
+          this.isLoading.next(false);
+        }
       );
   }
 
