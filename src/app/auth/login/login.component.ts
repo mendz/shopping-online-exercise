@@ -10,18 +10,20 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
-  minPasswordLength = 4;
+  minPasswordLength = 6;
   showPermissionIssue = false;
+  error: string = null;
+  isLoading = false;
 
   constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit() {
-    if (this.authService.isLoggedIn) {
+    if (this.authService.user.value) {
       this.router.navigate(['/']);
     }
 
     this.loginForm = new FormGroup({
-      userName: new FormControl(null, Validators.required),
+      email: new FormControl(null, [Validators.required, Validators.email]),
       password: new FormControl(null, [
         Validators.required,
         Validators.minLength(this.minPasswordLength),
@@ -29,21 +31,35 @@ export class LoginComponent implements OnInit {
     });
   }
 
+  get email() {
+    return this.loginForm.get('email');
+  }
+
   get password() {
     return this.loginForm.get('password');
   }
 
-  onLogin(userName: string, password: string) {
-    const successLogging = this.authService.login(userName, password);
-    if (!successLogging) {
-      this.showPermissionIssue = true;
-    }
+  onLogin(email: string, password: string) {
+    this.isLoading = true;
+    this.authService.login(email, password).subscribe(
+      responseData => {
+        this.isLoading = false;
+        this.router.navigate(['/products']);
+      },
+      errorMessage => {
+        this.isLoading = false;
+        this.error = errorMessage;
+        this.showPermissionIssue = true;
+      }
+    );
+
+    this.loginForm.reset();
   }
 
   onSubmit() {
     if (this.loginForm.valid) {
-      const { userName, password } = this.loginForm.value;
-      this.onLogin(userName, password);
+      const { email, password } = this.loginForm.value;
+      this.onLogin(email, password);
     }
   }
 

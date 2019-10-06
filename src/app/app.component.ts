@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthService } from './auth/auth.service';
 import { Subscription } from 'rxjs';
+import { User } from './auth/user.model';
 
 @Component({
   selector: 'app-root',
@@ -20,9 +21,10 @@ export class AppComponent implements OnInit, OnDestroy {
   constructor(public authService: AuthService) {}
 
   ngOnInit() {
-    this.activatedSubAuthLogin = this.authService.isLoggedIn.subscribe(
-      (isLoggedIn: boolean) => {
-        this.isLoggedIn = isLoggedIn;
+    this.authService.autoLogin();
+    this.activatedSubAuthLogin = this.authService.user.subscribe(
+      (user: User) => {
+        this.isLoggedIn = !!user;
       }
     );
   }

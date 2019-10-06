@@ -16,6 +16,7 @@ import { CenteredDirective } from './centered.directive';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ChartsComponent } from './charts/charts.component';
 import { HttpClientModule } from '@angular/common/http';
+import { ErrorBoxComponent } from './shared/error-box/error-box.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { HttpClientModule } from '@angular/common/http';
     ProductEditComponent,
     CenteredDirective,
     ChartsComponent,
+    ErrorBoxComponent,
   ],
   imports: [
     BrowserModule,

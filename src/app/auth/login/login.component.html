@@ -1,24 +1,52 @@
 <div appCentered [centerText]="true">
   <h1>Login</h1>
-  <form class="form" appCentered (ngSubmit)="onSubmit()" [formGroup]="loginForm">
+  <app-error-box *ngIf="error" [error]="error"></app-error-box>
+  <mat-spinner *ngIf="isLoading" appCentered></mat-spinner>
+  <form
+    class="form"
+    appCentered
+    (ngSubmit)="onSubmit()"
+    [formGroup]="loginForm"
+    *ngIf="!isLoading"
+  >
     <mat-form-field class="full-width">
-      <input required matInput type="text" placeholder="User Name" formControlName="userName" />
-      <mat-error>
-        Username is not <strong>required!</strong>
+      <input
+        required
+        matInput
+        type="email"
+        placeholder="E-Mail Address"
+        formControlName="email"
+      />
+      <mat-error *ngIf="email.hasError('required')">
+        Email is <strong>required!</strong>
+      </mat-error>
+      <mat-error *ngIf="email.hasError('email')">
+        Email is not <strong>valid!</strong>
       </mat-error>
     </mat-form-field>
     <mat-form-field class="full-width">
-      <input required matInput type="password" placeholder="Password" formControlName="password" />
+      <input
+        required
+        matInput
+        type="password"
+        placeholder="Password"
+        formControlName="password"
+      />
       <mat-error *ngIf="password.hasError('required')">
         Password is <strong>required!</strong>
       </mat-error>
       <mat-error *ngIf="password.hasError('minlength')">
         Password is not <strong>valid!</strong>, should be at least
-        {{minPasswordLength}}
+        {{ minPasswordLength }}
         characters.
       </mat-error>
     </mat-form-field>
-    <button mat-raised-button color="primary" type="submit" [disabled]="!loginForm.valid">
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      [disabled]="!loginForm.valid"
+    >
       Login
     </button>
   </form>

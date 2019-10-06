@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CartService } from '../cart/cart.service';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
+import { User } from '../auth/user.model';
 
 @Component({
   selector: 'app-header',
@@ -26,9 +27,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
       }
     );
 
-    this.activatedSubAuthLogin = this.authService.isLoggedIn.subscribe(
-      (isLoggedIn: boolean) => {
-        this.isLoggedIn = isLoggedIn;
+    this.activatedSubAuthLogin = this.authService.user.subscribe(
+      (user: User) => {
+        this.isLoggedIn = !!user;
       }
     );
   }
