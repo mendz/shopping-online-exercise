@@ -64,6 +64,7 @@ export class AuthService {
           );
           const user = new User(resEmail, localId, idToken, expirationDate);
           this.user.next(user);
+          this.autoLogout(+responseData.expiresIn * 1000);
           localStorage.setItem('userData', JSON.stringify(user));
         })
       );
