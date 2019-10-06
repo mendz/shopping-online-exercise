@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import data from '../assets/data.json';
 import { Product } from './products/product.model';
 import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs/operators';
+import { map, tap, catchError } from 'rxjs/operators';
 import { ProductsService } from './products/products.service';
-import { BehaviorSubject } from 'rxjs';
+import { throwError } from 'rxjs';
 
 interface APIProduct {
   name: string;
@@ -18,16 +18,12 @@ interface APIProduct {
   providedIn: 'root',
 })
 export class ApiService {
-  isLoading = new BehaviorSubject<boolean>(false);
-  error = new BehaviorSubject<string>('');
-
   constructor(
     private http: HttpClient,
     private productsService: ProductsService
   ) {}
 
   fetchProducts() {
-    this.isLoading.next(true);
     return this.http
       .get<{ [key: string]: APIProduct }>(
         'https://shopping-online-exercise.firebaseio.com/products.json'
@@ -48,17 +44,17 @@ export class ApiService {
             );
           }
           return productsArray;
-        })
-      )
-      .subscribe(
-        (products: Product[]) => {
-          this.isLoading.next(false);
+        }),
+        catchError(errorRes => {
+          let errorMessage = 'Unknown error occurred!';
+          if (errorRes.error.error) {
+            errorMessage = errorRes.error.error;
+          }
+          return throwError(errorMessage);
+        }),
+        tap((products: Product[]) => {
           this.productsService.setProducts(products);
-        },
-        error => {
-          this.error.next(error.error.error);
-          this.isLoading.next(false);
-        }
+        })
       );
   }
 

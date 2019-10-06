@@ -12,8 +12,6 @@ import { ApiService } from 'src/app/api.service';
 export class ProductListComponent implements OnInit, OnDestroy {
   products: Product[];
   private productsSub: Subscription;
-  private loadingSub: Subscription;
-  private errorSub: Subscription;
   isLoading: boolean;
   error: string;
 
@@ -23,18 +21,19 @@ export class ProductListComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.loadingSub = this.apiService.isLoading.subscribe(
-      (isLoading: boolean) => {
-        this.isLoading = isLoading;
+    this.isLoading = true;
+    this.apiService.fetchProducts().subscribe(
+      products => {
+        this.isLoading = false;
+      },
+      error => {
+        this.isLoading = false;
+        this.error = error;
       }
     );
-    this.errorSub = this.apiService.error.subscribe((error: string) => {
-      this.error = error;
-    });
     this.productsSub = this.productsService.productsChanged.subscribe(
       (products: Product[]) => {
         this.products = products;
-        this.isLoading = false;
       }
     );
     this.products = this.productsService.getProducts();
@@ -42,7 +41,5 @@ export class ProductListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.productsSub.unsubscribe();
-    this.loadingSub.unsubscribe();
-    this.errorSub.unsubscribe();
   }
 }
