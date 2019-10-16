@@ -15,8 +15,9 @@ import { ProductEditComponent } from './products/product-edit/product-edit.compo
 import { CenteredDirective } from './centered.directive';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ChartsComponent } from './charts/charts.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ErrorBoxComponent } from './shared/error-box/error-box.component';
+import { AuthInterceptorService } from './auth/auth-interceptor.service';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,13 @@ import { ErrorBoxComponent } from './shared/error-box/error-box.component';
     AppMaterialModule,
     ReactiveFormsModule,
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptorService,
+      multi: true,
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
