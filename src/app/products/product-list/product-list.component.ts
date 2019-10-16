@@ -21,22 +21,24 @@ export class ProductListComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.isLoading = true;
-    this.apiService.fetchProducts().subscribe(
-      products => {
-        this.isLoading = false;
-      },
-      error => {
-        this.isLoading = false;
-        this.error = error;
-      }
-    );
     this.productsSub = this.productsService.productsChanged.subscribe(
       (products: Product[]) => {
         this.products = products;
       }
     );
     this.products = this.productsService.getProducts();
+    if (!this.products.length) {
+      this.isLoading = true;
+      this.apiService.fetchProducts().subscribe(
+        products => {
+          this.isLoading = false;
+        },
+        error => {
+          this.isLoading = false;
+          this.error = error;
+        }
+      );
+    }
   }
 
   ngOnDestroy() {
