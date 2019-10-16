@@ -11,13 +11,14 @@ export class CartProduct {
     name: string,
     desc: string,
     imagePath: string,
-    price: number
+    price: number,
+    amount?: number
   ) {
     this.id = id;
     this.name = name;
     this.description = desc;
     this.imagePath = imagePath;
-    this.amount = 1; // set the initial amount
+    this.amount = amount || 1; // set the initial amount
     this.costPrice = price;
   }
 }
