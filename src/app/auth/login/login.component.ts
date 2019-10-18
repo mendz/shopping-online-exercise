@@ -71,7 +71,6 @@ export class LoginComponent implements OnInit {
         })
       )
       .subscribe((cartProducts: CartProduct[]) => {
-        console.log('cartProducts:', cartProducts);
         this.cartService.setCart(cartProducts);
       });
 

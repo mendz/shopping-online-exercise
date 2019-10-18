@@ -14,8 +14,9 @@
         required
         matInput
         type="email"
-        placeholder="E-Mail Address"
+        placeholder="E-Mail Address (@test.com)"
         formControlName="email"
+        autocomplete="username"
       />
       <mat-error *ngIf="email.hasError('required')">
         Email is <strong>required!</strong>
@@ -31,6 +32,7 @@
         type="password"
         placeholder="Password"
         formControlName="password"
+        autocomplete="current-password"
       />
       <mat-error *ngIf="password.hasError('required')">
         Password is <strong>required!</strong>
@@ -50,5 +52,7 @@
       Login
     </button>
   </form>
-  <p [ngStyle]="{ color: getColor() }">Please enter the correct credentials</p>
+  <p [ngStyle]="{ color: getColor() }" *ngIf="!isLoading">
+    Please enter the correct credentials
+  </p>
 </div>
