@@ -139,7 +139,7 @@ export class ApiService {
 
   getCart(userId: string) {
     // check if there cart in the local storage
-    // (TODO: add a date to check if there a new cart in the DB)
+    // TODO: add a date to check if there a new cart in the DB
     const cartData: [
       {
         amount: string;
