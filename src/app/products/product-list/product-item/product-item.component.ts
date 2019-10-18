@@ -16,22 +16,37 @@ export class ProductItemComponent implements OnInit {
 
   constructor(
     private cartService: CartService,
-    private authService: AuthService
+    private authService: AuthService,
+    private apiService: ApiService
   ) {}
 
   ngOnInit() {}
 
   addToCart() {
     const userId = this.authService.user.value.id;
-    this.cartService.addToCart(
-      userId,
-      new CartProduct(
-        this.product.id,
-        this.product.name,
-        this.product.description,
-        this.product.imagePath,
-        this.product.price
-      )
+    const cartProducts = this.cartService.getCartProducts();
+    const allOtherProducts = cartProducts.filter(
+      product => product.name !== this.product.name
     );
+    let amount = 1;
+
+    // check if the product is in the cart
+    const selectedProduct = cartProducts.find(
+      product => product.name === this.product.name
+    );
+    if (selectedProduct) {
+      amount = selectedProduct.amount + 1;
+    }
+
+    const addedCartProduct = new CartProduct(
+      userId,
+      this.product.name,
+      this.product.description,
+      this.product.imagePath,
+      this.product.price,
+      amount
+    );
+    this.cartService.addToCart(addedCartProduct);
+    this.apiService.updateCart(userId, [...allOtherProducts, addedCartProduct]);
   }
 }

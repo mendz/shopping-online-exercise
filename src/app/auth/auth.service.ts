@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, throwError } from 'rxjs';
+import { catchError, tap, first } from 'rxjs/operators';
 import { Router } from '@angular/router';
+
 import { ProductsService } from '../products/products.service';
 import { CartService } from '../cart/cart.service';
 import { User } from './user.model';
-import { HttpClient } from '@angular/common/http';
-import { catchError, tap } from 'rxjs/operators';
+import { ApiService } from '../api.service';
 
 export interface AuthResponseData {
   kind: string;
@@ -25,7 +27,8 @@ export class AuthService {
     private router: Router,
     private productsService: ProductsService,
     private cartService: CartService,
-    private http: HttpClient
+    private http: HttpClient,
+    private api: ApiService
   ) {}
 
   login(email: string, password: string) {
@@ -97,17 +100,25 @@ export class AuthService {
       const expirationDurationLeft =
         new Date(_tokenExpirationDate).getTime() - new Date().getTime();
       this.autoLogout(expirationDurationLeft);
+
+      // fetch the cart
+      this.api
+        .getCart(this.user.value.id)
+        .pipe(first()) // will end the subscription after the first event.
+        .subscribe(cartProducts => {
+          this.cartService.setCart(cartProducts);
+        });
     }
   }
 
   logout() {
     // set the products and the cart to empty array when the user logged out
-    // TODO: maybe set the cart products to user?
     this.productsService.setProducts([]);
     this.cartService.setCart([]);
     this.user.next(null);
     this.router.navigate(['/login']);
     localStorage.removeItem('userData');
+    localStorage.removeItem('cart');
     if (this.autoLogoutTimeout) {
       clearTimeout(this.autoLogoutTimeout);
     }

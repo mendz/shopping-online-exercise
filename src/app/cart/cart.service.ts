@@ -1,15 +1,17 @@
 import { Injectable } from '@angular/core';
+import { Subject, BehaviorSubject } from 'rxjs';
+
 import { CartProduct } from './cart-product.model';
-import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CartService {
   private cartProducts: CartProduct[] = [];
-  amountProducts = new Subject<number>();
+  amountProducts = new BehaviorSubject<number>(0);
   productsCost = new Subject<number>();
   cartProductsChange = new Subject<CartProduct[]>();
+  // databaseId: string; // TODO: decide where to save this id
 
   constructor() {}
 
@@ -33,8 +35,9 @@ export class CartService {
     return cost;
   }
 
-  private updateProducts(cartProduct: CartProduct[]) {
-    this.cartProductsChange.next(this.cartProducts);
+  private updateProducts(cartProducts: CartProduct[]) {
+    localStorage.setItem('cart', JSON.stringify(cartProducts));
+    this.cartProductsChange.next(cartProducts);
     this.amountProducts.next(this.getSumProducts());
     this.productsCost.next(this.getProductsCost());
   }
@@ -55,10 +58,10 @@ export class CartService {
     this.updateProducts(this.cartProducts);
   }
 
-  removeFromCart(productId: string) {
+  removeFromCart(productName: string) {
     // check the amount of this product
     const indexProductToCheck = this.cartProducts.findIndex(
-      product => product.id === productId
+      product => product.name === productName
     );
     // if it more then one, only decrement the value
     if (this.cartProducts[indexProductToCheck].amount > 1) {
@@ -66,7 +69,7 @@ export class CartService {
     } else {
       // if it only one, remove the product
       const updatedProducts = this.cartProducts.filter(
-        product => product.id !== productId
+        product => product.name !== productName
       );
       this.cartProducts = [...updatedProducts];
     }

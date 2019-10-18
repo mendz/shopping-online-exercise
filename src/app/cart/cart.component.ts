@@ -1,7 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
+
 import { CartService } from './cart.service';
 import { CartProduct } from './cart-product.model';
-import { Subscription } from 'rxjs';
+import { ApiService } from '../api.service';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-cart',
@@ -14,7 +17,11 @@ export class CartComponent implements OnInit, OnDestroy {
   private activatedSubProductsChange: Subscription;
   private activatedSubCost: Subscription;
 
-  constructor(private cartService: CartService) {}
+  constructor(
+    private cartService: CartService,
+    private apiService: ApiService,
+    private authService: AuthService
+  ) {}
 
   ngOnInit() {
     this.products = this.cartService.getCartProducts();
@@ -34,6 +41,8 @@ export class CartComponent implements OnInit, OnDestroy {
 
   onRemoveProduct(productName: string) {
     this.cartService.removeFromCart(productName);
+    const userId = this.authService.user.value.id;
+    this.apiService.updateCart(userId, this.products);
   }
 
   ngOnDestroy() {

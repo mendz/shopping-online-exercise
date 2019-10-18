@@ -17,7 +17,7 @@
       </h4>
       <p mat-line>{{ product.description }}</p>
       <p class="amount">(x{{ product.amount }})</p>
-      <button mat-mini-fab color="warn" (click)="onRemoveProduct(product.id)">
+      <button mat-mini-fab color="warn" (click)="onRemoveProduct(product.name)">
         <mat-icon>delete_forever</mat-icon>
       </button>
     </mat-list-item>

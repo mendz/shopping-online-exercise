@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { map, tap, catchError } from 'rxjs/operators';
-import { throwError } from 'rxjs';
+import { map, tap, catchError, switchMap } from 'rxjs/operators';
+import { throwError, of } from 'rxjs';
 
 import data from '../assets/data.json';
 import { Product } from './products/product.model';
@@ -11,9 +11,9 @@ import { CartService } from './cart/cart.service.js';
 
 interface APIProduct {
   name: string;
-  desc: string;
-  image: string;
-  price: string;
+  description: string;
+  imagePath: string;
+  costPrice: string;
   dateAdded: string;
   amount?: string;
 }
@@ -27,6 +27,7 @@ interface APICart {
   providedIn: 'root',
 })
 export class ApiService {
+  // TODO: check the code to save the cart key and use it to check if the cart is exists and not by checking the response
   cartKey: string = null;
 
   constructor(
@@ -48,9 +49,9 @@ export class ApiService {
               new Product(
                 key,
                 product.name,
-                product.desc,
-                product.image,
-                +product.price,
+                product.description,
+                product.imagePath,
+                +product.costPrice,
                 new Date(product.dateAdded)
               )
             );
@@ -71,26 +72,69 @@ export class ApiService {
   }
 
   updateCart(userId: string, cartProducts: CartProduct[]) {
-    // check if the array is empty
-    // if so, find the id to remove, and remove the cart
-    // if the array have items, check if there ia already cart in the DB
-    // if so update
-    // if not create new
-    console.log('userId:', userId);
-    console.log('cartProducts:', cartProducts);
     const cartItem = {
       userId,
       cartProducts,
     };
 
-    this.http
-      .post(
-        'https://shopping-online-exercise.firebaseio.com/cart.json',
-        cartItem
-      )
-      .subscribe(response => {
-        console.log('response:', response);
-      });
+    let params = new HttpParams();
+    params = params.append('orderBy', '"userId"');
+    params = params.append('equalTo', `"${userId}"`);
+
+    // check if the array is empty
+    if (cartProducts.length === 0) {
+      // if so, find the id to remove, and remove the cart
+      this.http
+        .get<{ [key: string]: APICart }>(
+          'https://shopping-online-exercise.firebaseio.com/cart.json',
+          { params }
+        )
+        .pipe(
+          switchMap(response => {
+            const cartKey = Object.keys(response)[0];
+            return this.http.delete(
+              `https://shopping-online-exercise.firebaseio.com/cart/${cartKey}.json`
+            );
+          })
+        )
+        .subscribe();
+    } else {
+      // if the array have items, check if there ia already cart in the DB
+      this.http
+        .get<{ [key: string]: APICart }>(
+          'https://shopping-online-exercise.firebaseio.com/cart.json',
+          { params }
+        )
+        .pipe(
+          switchMap(response => {
+            console.log('response:', response);
+            // have the cart in the DB
+            if (Object.keys(response).length) {
+              console.log('cartItem:', cartItem);
+              const cartKey = Object.keys(response)[0];
+              return this.http.patch<{ [key: string]: APICart }>(
+                'https://shopping-online-exercise.firebaseio.com/cart.json',
+                {
+                  [cartKey]: {
+                    userId: cartItem.userId,
+                    cartProducts: cartItem.cartProducts,
+                  },
+                }
+              );
+            } else {
+              // create new cart
+              return this.http.post<{ [key: string]: APICart }>(
+                'https://shopping-online-exercise.firebaseio.com/cart.json',
+                {
+                  userId: cartItem.userId,
+                  cartProducts: cartItem.cartProducts,
+                }
+              );
+            }
+          })
+        )
+        .subscribe();
+    }
   }
 
   getCart(userId: string) {
@@ -129,7 +173,7 @@ export class ApiService {
         cartProducts.push(loadedCartProduct);
       }
 
-      return cartProducts;
+      return of(cartProducts);
     }
 
     // if not load from DB
@@ -145,22 +189,27 @@ export class ApiService {
       )
       .pipe(
         map(responseData => {
-          const [cartKey, cartObj] = Object.entries(responseData)[0];
-          // get the firebase key of this specific cart
-          this.cartKey = cartKey;
-          // return only the cart products
-          const cartProducts: CartProduct[] = cartObj.cartProducts.map(
-            cartItem =>
-              new CartProduct(
-                cartObj.userId,
-                cartItem.name,
-                cartItem.desc,
-                cartItem.image,
-                +cartItem.price,
-                +cartItem.amount
-              )
-          );
-          return cartProducts;
+          // check if there a cart in the DB
+          if (Object.keys(responseData).length) {
+            const [cartKey, cartObj] = Object.entries(responseData)[0];
+            // get the firebase key of this specific cart
+            this.cartKey = cartKey;
+            // return only the cart products
+            const cartProducts: CartProduct[] = cartObj.cartProducts.map(
+              cartItem =>
+                new CartProduct(
+                  cartObj.userId,
+                  cartItem.name,
+                  cartItem.description,
+                  cartItem.imagePath,
+                  +cartItem.costPrice,
+                  +cartItem.amount
+                )
+            );
+            return cartProducts;
+          } else {
+            return [];
+          }
         })
       );
   }
