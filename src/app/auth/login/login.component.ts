@@ -1,10 +1,9 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ApiService } from 'src/app/shared/api.service';
-import { map, tap, mergeMap, flatMap, switchMap } from 'rxjs/operators';
-import { HttpErrorResponse } from '@angular/common/http';
+import { map, switchMap } from 'rxjs/operators';
 import { CartProduct } from 'src/app/cart/cart-product.model';
 import { CartService } from 'src/app/cart/cart.service';
 
@@ -54,25 +53,25 @@ export class LoginComponent implements OnInit {
     this.authService
       .login(email, password)
       .pipe(
-        map(
-          responseData => {
-            this.isLoading = false;
-            this.router.navigate(['/products']);
-            return responseData.localId;
-          },
-          (errorMessage: string) => {
-            this.isLoading = false;
-            this.error = errorMessage;
-            this.showPermissionIssue = true;
-          }
-        ),
+        map(responseData => {
+          this.isLoading = false;
+          this.router.navigate(['/products']);
+          return responseData.localId;
+        }),
         switchMap(userId => {
           return this.apiService.getCart(userId);
         })
       )
-      .subscribe((cartProducts: CartProduct[]) => {
-        this.cartService.setCart(cartProducts);
-      });
+      .subscribe(
+        (cartProducts: CartProduct[]) => {
+          this.cartService.setCart(cartProducts);
+        },
+        (errorMessage: string) => {
+          this.isLoading = false;
+          this.error = errorMessage;
+          this.showPermissionIssue = true;
+        }
+      );
 
     this.loginForm.reset();
   }
