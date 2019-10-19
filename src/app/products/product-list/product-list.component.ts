@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Product } from '../product.model';
 import { ProductsService } from '../products.service';
 import { Subscription } from 'rxjs';
-import { ApiService } from 'src/app/api.service';
+import { ApiService } from 'src/app/shared/api.service';
 
 @Component({
   selector: 'app-product-list',

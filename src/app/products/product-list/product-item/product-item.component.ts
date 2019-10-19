@@ -3,7 +3,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Product } from '../../product.model';
 import { CartService } from 'src/app/cart/cart.service';
 import { CartProduct } from 'src/app/cart/cart-product.model';
-import { ApiService } from 'src/app/api.service';
+import { ApiService } from 'src/app/shared/api.service';
 import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({

@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 import { ProductsService } from '../products/products.service';
 import { CartService } from '../cart/cart.service';
 import { User } from './user.model';
-import { ApiService } from '../api.service';
+import { ApiService } from '../shared/api.service';
 
 export interface AuthResponseData {
   kind: string;

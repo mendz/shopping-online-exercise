@@ -3,7 +3,7 @@ import { Subscription } from 'rxjs';
 
 import { CartService } from './cart.service';
 import { CartProduct } from './cart-product.model';
-import { ApiService } from '../api.service';
+import { ApiService } from '../shared/api.service';
 import { AuthService } from '../auth/auth.service';
 
 @Component({

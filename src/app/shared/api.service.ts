@@ -3,11 +3,10 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { map, tap, catchError, switchMap } from 'rxjs/operators';
 import { throwError, of } from 'rxjs';
 
-import data from '../assets/data.json';
-import { Product } from './products/product.model';
-import { ProductsService } from './products/products.service';
-import { CartProduct } from './cart/cart-product.model.js';
-import { CartService } from './cart/cart.service.js';
+import data from '../../assets/data.json';
+import { Product } from '../products/product.model';
+import { ProductsService } from '../products/products.service';
+import { CartProduct } from '../cart/cart-product.model.js';
 
 interface APIProduct {
   name: string;
@@ -32,8 +31,7 @@ export class ApiService {
 
   constructor(
     private http: HttpClient,
-    private productsService: ProductsService,
-    private cartService: CartService
+    private productsService: ProductsService
   ) {}
 
   fetchProducts() {
