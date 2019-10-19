@@ -8,7 +8,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 @NgModule({
   declarations: [LoginComponent],
   imports: [
-    RouterModule.forChild([{ path: 'login', component: LoginComponent }]),
+    RouterModule.forChild([{ path: '', component: LoginComponent }]),
     SharedModule,
     ReactiveFormsModule,
   ],

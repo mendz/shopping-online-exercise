@@ -105,10 +105,8 @@ export class ApiService {
         )
         .pipe(
           switchMap(response => {
-            console.log('response:', response);
             // have the cart in the DB
             if (Object.keys(response).length) {
-              console.log('cartItem:', cartItem);
               const cartKey = Object.keys(response)[0];
               return this.http.patch<{ [key: string]: APICart }>(
                 'https://shopping-online-exercise.firebaseio.com/cart.json',

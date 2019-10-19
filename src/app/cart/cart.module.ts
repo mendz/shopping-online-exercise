@@ -10,7 +10,7 @@ import { AuthGuard } from '../auth/auth.guard';
   imports: [
     SharedModule,
     RouterModule.forChild([
-      { path: 'cart', component: CartComponent, canActivate: [AuthGuard] },
+      { path: '', component: CartComponent, canActivate: [AuthGuard] },
     ]),
   ],
 })

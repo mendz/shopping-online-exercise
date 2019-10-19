@@ -11,7 +11,7 @@ import { AuthGuard } from '../auth/auth.guard';
     SharedModule,
     RouterModule.forChild([
       {
-        path: 'charts',
+        path: '',
         component: ChartsComponent,
         canActivate: [AuthGuard],
       },

@@ -20,7 +20,7 @@ import { ProductEditComponent } from './product-edit/product-edit.component';
     SharedModule,
     RouterModule.forChild([
       {
-        path: 'products',
+        path: '',
         component: ProductsComponent,
         canActivate: [AuthGuard],
       },
