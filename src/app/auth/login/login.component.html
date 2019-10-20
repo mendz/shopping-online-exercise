@@ -1,6 +1,10 @@
 <div appCentered [centerText]="true">
   <h1>Login</h1>
-  <app-error-box *ngIf="error" [error]="error"></app-error-box>
+  <app-alert
+    [message]="error"
+    *ngIf="error"
+    (closeAlert)="onHandleError()"
+  ></app-alert>
   <mat-spinner *ngIf="isLoading" appCentered></mat-spinner>
   <form
     class="form"

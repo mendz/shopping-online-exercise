@@ -90,4 +90,8 @@ export class LoginComponent implements OnInit {
       return 'red';
     }
   }
+
+  onHandleError() {
+    this.error = null;
+  }
 }
