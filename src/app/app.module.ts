@@ -4,6 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { EffectsModule } from '@ngrx/effects';
 
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
@@ -12,6 +13,7 @@ import { HeaderComponent } from './header/header.component';
 import { SharedModule } from './shared/shared.module';
 import { CoreModule } from './core.module';
 import * as fromApp from './store/app.reducer';
+import { ProductsEffects } from './products/store/products.effects';
 
 @NgModule({
   declarations: [AppComponent, HeaderComponent],
@@ -21,6 +23,7 @@ import * as fromApp from './store/app.reducer';
     AppRoutingModule,
     BrowserAnimationsModule,
     StoreModule.forRoot(fromApp.appReducer),
+    EffectsModule.forRoot([ProductsEffects]),
     StoreDevtoolsModule.instrument({ logOnly: environment.production }),
     SharedModule,
     CoreModule,

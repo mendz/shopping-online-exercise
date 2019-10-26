@@ -6,7 +6,6 @@ import { Store } from '@ngrx/store';
 
 import data from '../../assets/data.json';
 import { Product } from '../products/product.model';
-import { ProductsService } from '../products/products.service';
 import { CartProduct } from '../cart/cart-product.model.js';
 import * as fromApp from '../store/app.reducer';
 import * as ProductsActions from '../products/store/products.actions';
@@ -34,7 +33,6 @@ export class ApiService {
 
   constructor(
     private http: HttpClient,
-    private productsService: ProductsService,
     private store: Store<fromApp.AppState>
   ) {}
 

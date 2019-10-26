@@ -3,11 +3,13 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, throwError } from 'rxjs';
 import { catchError, tap, first } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 
-import { ProductsService } from '../products/products.service';
 import { CartService } from '../cart/cart.service';
 import { User } from './user.model';
 import { ApiService } from '../shared/api.service';
+import * as fromApp from '../store/app.reducer';
+import * as ProductsActions from '../products/store/products.actions';
 
 export interface AuthResponseData {
   kind: string;
@@ -25,10 +27,10 @@ export class AuthService {
 
   constructor(
     private router: Router,
-    private productsService: ProductsService,
     private cartService: CartService,
     private http: HttpClient,
-    private api: ApiService
+    private api: ApiService,
+    private store: Store<fromApp.AppState>
   ) {}
 
   login(email: string, password: string) {
@@ -113,7 +115,7 @@ export class AuthService {
 
   logout() {
     // set the products and the cart to empty array when the user logged out
-    this.productsService.setProducts([]);
+    this.store.dispatch(ProductsActions.setProducts({ products: [] }));
     this.cartService.setCart([]);
     this.user.next(null);
     this.router.navigate(['/login']);
