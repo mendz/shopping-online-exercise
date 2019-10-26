@@ -2,11 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { map, tap, catchError, switchMap } from 'rxjs/operators';
 import { throwError, of } from 'rxjs';
+import { Store } from '@ngrx/store';
 
 import data from '../../assets/data.json';
 import { Product } from '../products/product.model';
 import { ProductsService } from '../products/products.service';
 import { CartProduct } from '../cart/cart-product.model.js';
+import * as fromApp from '../store/app.reducer';
+import * as ProductsActions from '../products/store/products.actions';
 
 interface APIProduct {
   name: string;
@@ -31,7 +34,8 @@ export class ApiService {
 
   constructor(
     private http: HttpClient,
-    private productsService: ProductsService
+    private productsService: ProductsService,
+    private store: Store<fromApp.AppState>
   ) {}
 
   fetchProducts() {
@@ -64,7 +68,8 @@ export class ApiService {
           return throwError(errorMessage);
         }),
         tap((products: Product[]) => {
-          this.productsService.setProducts(products);
+          // this.productsService.setProducts(products);
+          this.store.dispatch(ProductsActions.setProducts({ products }));
         })
       );
   }
