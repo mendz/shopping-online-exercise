@@ -1,9 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { Store } from '@ngrx/store';
 
-import { CartService } from '../cart/cart.service';
 import { AuthService } from '../auth/auth.service';
 import { User } from '../auth/user.model';
+import * as fromApp from '../store/app.reducer';
 
 @Component({
   selector: 'app-header',
@@ -13,20 +14,23 @@ import { User } from '../auth/user.model';
 export class HeaderComponent implements OnInit, OnDestroy {
   cartItemsCount = 0;
   isLoggedIn = false;
-  private activatedSubCartAmount: Subscription;
   private activatedSubAuthLogin: Subscription;
+  private storeSub: Subscription;
 
   constructor(
-    private cartService: CartService,
-    private authService: AuthService
+    private authService: AuthService,
+    private store: Store<fromApp.AppState>
   ) {}
 
   ngOnInit() {
-    this.activatedSubCartAmount = this.cartService.amountProducts.subscribe(
-      (count: number) => {
-        this.cartItemsCount = count;
-      }
-    );
+    this.storeSub = this.store.select('cart').subscribe(cartState => {
+      this.cartItemsCount = cartState.amountProducts;
+    });
+    // this.activatedSubCartAmount = this.cartService.amountProducts.subscribe(
+    //   (count: number) => {
+    //     this.cartItemsCount = count;
+    //   }
+    // );
 
     this.activatedSubAuthLogin = this.authService.user.subscribe(
       (user: User) => {
@@ -36,7 +40,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.activatedSubCartAmount.unsubscribe();
+    this.storeSub.unsubscribe();
     this.activatedSubAuthLogin.unsubscribe();
   }
 

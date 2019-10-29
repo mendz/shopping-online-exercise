@@ -14,6 +14,7 @@ import { SharedModule } from './shared/shared.module';
 import { CoreModule } from './core.module';
 import * as fromApp from './store/app.reducer';
 import { ProductsEffects } from './products/store/products.effects';
+import { CartEffects } from './cart/store/cart.effects';
 
 @NgModule({
   declarations: [AppComponent, HeaderComponent],
@@ -23,7 +24,7 @@ import { ProductsEffects } from './products/store/products.effects';
     AppRoutingModule,
     BrowserAnimationsModule,
     StoreModule.forRoot(fromApp.appReducer),
-    EffectsModule.forRoot([ProductsEffects]),
+    EffectsModule.forRoot([ProductsEffects, CartEffects]),
     StoreDevtoolsModule.instrument({ logOnly: environment.production }),
     SharedModule,
     CoreModule,

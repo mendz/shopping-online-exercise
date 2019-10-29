@@ -1,8 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import * as Highcharts from 'highcharts';
+import { Store } from '@ngrx/store';
+import { Subscription } from 'rxjs';
+
 import { CartService } from '../cart/cart.service';
 import { CartProduct } from '../cart/cart-product.model';
-import { Subscription } from 'rxjs';
+import * as fromApp from '../store/app.reducer';
 
 let Boost = require('highcharts/modules/boost');
 let noData = require('highcharts/modules/no-data-to-display');
@@ -21,17 +24,19 @@ noData(Highcharts);
 export class ChartsComponent implements OnInit, OnDestroy {
   public options: any;
   cartItemsCount = 0;
-  private activatedSubCartAmount: Subscription;
+  cartProducts: CartProduct[];
+  private storeSub: Subscription;
 
-  constructor(private cartService: CartService) {}
+  constructor(
+    private cartService: CartService,
+    private store: Store<fromApp.AppState>
+  ) {}
 
   ngOnInit() {
-    this.cartItemsCount = this.cartService.getSumProducts();
-    this.activatedSubCartAmount = this.cartService.amountProducts.subscribe(
-      (count: number) => {
-        this.cartItemsCount = count;
-      }
-    );
+    this.storeSub = this.store.select('cart').subscribe(cartState => {
+      this.cartProducts = cartState.cartProducts;
+      this.cartItemsCount = cartState.amountProducts;
+    });
 
     this.options = {
       chart: {
@@ -60,12 +65,10 @@ export class ChartsComponent implements OnInit, OnDestroy {
         {
           name: 'Products percentage from the cart',
           colorByPoint: true,
-          data: this.cartService
-            .getCartProducts()
-            .map((product: CartProduct) => ({
-              name: product.name,
-              y: product.amount,
-            })),
+          data: this.cartProducts.map((product: CartProduct) => ({
+            name: product.name,
+            y: product.amount,
+          })),
         },
       ],
     };
@@ -74,6 +77,6 @@ export class ChartsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.activatedSubCartAmount.unsubscribe();
+    this.storeSub.unsubscribe();
   }
 }

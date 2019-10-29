@@ -15,9 +15,9 @@ export class CartService {
 
   constructor() {}
 
-  getCartProducts() {
-    return [...this.cartProducts];
-  }
+  // getCartProducts() {
+  //   return [...this.cartProducts];
+  // }
 
   getSumProducts() {
     return this.cartProducts.reduce(

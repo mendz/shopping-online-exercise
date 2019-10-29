@@ -10,6 +10,7 @@ import { User } from './user.model';
 import { ApiService } from '../shared/api.service';
 import * as fromApp from '../store/app.reducer';
 import * as ProductsActions from '../products/store/products.actions';
+import * as CartActions from '../cart/store/cart.actions';
 
 export interface AuthResponseData {
   kind: string;
@@ -108,7 +109,8 @@ export class AuthService {
         .getCart(this.user.value.id)
         .pipe(first()) // will end the subscription after the first event.
         .subscribe(cartProducts => {
-          this.cartService.setCart(cartProducts);
+          // this.cartService.setCart(cartProducts);
+          this.store.dispatch(CartActions.setCartProducts({ cartProducts }));
         });
     }
   }
@@ -116,7 +118,8 @@ export class AuthService {
   logout() {
     // set the products and the cart to empty array when the user logged out
     this.store.dispatch(ProductsActions.setProducts({ products: [] }));
-    this.cartService.setCart([]);
+    // this.cartService.setCart([]);
+    this.store.dispatch(CartActions.setCartProducts({ cartProducts: [] }));
     this.user.next(null);
     this.router.navigate(['/login']);
     localStorage.removeItem('userData');

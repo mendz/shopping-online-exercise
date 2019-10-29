@@ -2,10 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { ApiService } from 'src/app/shared/api.service';
+import { Store } from '@ngrx/store';
 import { map, switchMap } from 'rxjs/operators';
+
+import { ApiService } from 'src/app/shared/api.service';
 import { CartProduct } from 'src/app/cart/cart-product.model';
 import { CartService } from 'src/app/cart/cart.service';
+import * as fromApp from '../../store/app.reducer';
+import * as CartActions from '../../cart/store/cart.actions';
 
 @Component({
   selector: 'app-login',
@@ -23,7 +27,8 @@ export class LoginComponent implements OnInit {
     private authService: AuthService,
     private router: Router,
     private apiService: ApiService,
-    private cartService: CartService
+    private cartService: CartService,
+    private store: Store<fromApp.AppState>
   ) {}
 
   ngOnInit() {
@@ -64,7 +69,8 @@ export class LoginComponent implements OnInit {
       )
       .subscribe(
         (cartProducts: CartProduct[]) => {
-          this.cartService.setCart(cartProducts);
+          // this.cartService.setCart(cartProducts);
+          this.store.dispatch(CartActions.setCartProducts({ cartProducts }));
         },
         (errorMessage: string) => {
           this.isLoading = false;

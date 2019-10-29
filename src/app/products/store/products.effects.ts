@@ -7,7 +7,7 @@ import { of } from 'rxjs';
 import * as ProductsActions from './products.actions';
 import { Product } from '../product.model';
 
-interface APIProduct {
+export interface APIProduct {
   name: string;
   description: string;
   imagePath: string;

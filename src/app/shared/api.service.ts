@@ -8,7 +8,6 @@ import data from '../../assets/data.json';
 import { Product } from '../products/product.model';
 import { CartProduct } from '../cart/cart-product.model.js';
 import * as fromApp from '../store/app.reducer';
-import * as ProductsActions from '../products/store/products.actions';
 
 interface APIProduct {
   name: string;
@@ -36,41 +35,41 @@ export class ApiService {
     private store: Store<fromApp.AppState>
   ) {}
 
-  fetchProducts() {
-    return this.http
-      .get<{ [key: string]: APIProduct }>(
-        'https://shopping-online-exercise.firebaseio.com/products.json'
-      )
-      .pipe(
-        map(responsesData => {
-          const productsArray: Product[] = [];
-          for (const [key, product] of Object.entries(responsesData)) {
-            productsArray.push(
-              new Product(
-                key,
-                product.name,
-                product.description,
-                product.imagePath,
-                +product.costPrice,
-                new Date(product.dateAdded)
-              )
-            );
-          }
-          return productsArray;
-        }),
-        catchError(errorRes => {
-          let errorMessage = 'Unknown error occurred!';
-          if (errorRes.error.error) {
-            errorMessage = errorRes.error.error;
-          }
-          return throwError(errorMessage);
-        }),
-        tap((products: Product[]) => {
-          // this.productsService.setProducts(products);
-          this.store.dispatch(ProductsActions.setProducts({ products }));
-        })
-      );
-  }
+  // fetchProducts() {
+  //   return this.http
+  //     .get<{ [key: string]: APIProduct }>(
+  //       'https://shopping-online-exercise.firebaseio.com/products.json'
+  //     )
+  //     .pipe(
+  //       map(responsesData => {
+  //         const productsArray: Product[] = [];
+  //         for (const [key, product] of Object.entries(responsesData)) {
+  //           productsArray.push(
+  //             new Product(
+  //               key,
+  //               product.name,
+  //               product.description,
+  //               product.imagePath,
+  //               +product.costPrice,
+  //               new Date(product.dateAdded)
+  //             )
+  //           );
+  //         }
+  //         return productsArray;
+  //       }),
+  //       catchError(errorRes => {
+  //         let errorMessage = 'Unknown error occurred!';
+  //         if (errorRes.error.error) {
+  //           errorMessage = errorRes.error.error;
+  //         }
+  //         return throwError(errorMessage);
+  //       }),
+  //       tap((products: Product[]) => {
+  //         // this.productsService.setProducts(products);
+  //         this.store.dispatch(ProductsActions.setProducts({ products }));
+  //       })
+  //     );
+  // }
 
   updateCart(userId: string, cartProducts: CartProduct[]) {
     const cartItem = {
