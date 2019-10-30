@@ -16,7 +16,6 @@ import { User } from '../user.model';
 export class LoginComponent implements OnInit, OnDestroy {
   loginForm: FormGroup;
   minPasswordLength = 6;
-  showPermissionIssue = false;
   error: string = null;
   isLoading = false;
   private haveUser = false;
@@ -29,7 +28,6 @@ export class LoginComponent implements OnInit, OnDestroy {
       this.isLoading = authState.isLoading;
       this.error = authState.authError;
       this.haveUser = authState.user ? true : false;
-      this.showPermissionIssue = this.error && this.error.trim().length !== 0;
     });
 
     if (this.haveUser) {
@@ -62,14 +60,6 @@ export class LoginComponent implements OnInit, OnDestroy {
     if (this.loginForm.valid) {
       const { email, password } = this.loginForm.value;
       this.onLogin(email, password);
-    }
-  }
-
-  getColor() {
-    if (!this.showPermissionIssue) {
-      return 'green';
-    } else {
-      return 'red';
     }
   }
 

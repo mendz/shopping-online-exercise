@@ -27,7 +27,6 @@ export class AuthEffects {
       ofType(AuthActions.loginStart),
       switchMap(authActions => {
         const { email, password } = authActions;
-        console.log('authActions:', authActions);
         return this.http
           .post<AuthResponseData>(
             'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDysPoiPj9MgnE_79eSjNUf5EJpUoUSmXA',
@@ -84,7 +83,6 @@ export class AuthEffects {
     this.actions$.pipe(
       ofType(AuthActions.logout),
       mergeMap(() => {
-        console.log('auth logout');
         this.authService.clearTimerLogout();
         localStorage.removeItem('userData');
         this.router.navigate(['/login']);
