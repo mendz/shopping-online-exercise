@@ -1,38 +1,38 @@
-import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../auth.service';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { map, switchMap } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 
-import { ApiService } from 'src/app/shared/api.service';
-import { CartProduct } from 'src/app/cart/cart-product.model';
-import { CartService } from 'src/app/cart/cart.service';
 import * as fromApp from '../../store/app.reducer';
-import * as CartActions from '../../cart/store/cart.actions';
+import * as AuthActions from '../../auth/store/auth.actions';
+import { User } from '../user.model';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
   loginForm: FormGroup;
   minPasswordLength = 6;
   showPermissionIssue = false;
   error: string = null;
   isLoading = false;
+  private haveUser = false;
+  private storeSub: Subscription;
 
-  constructor(
-    private authService: AuthService,
-    private router: Router,
-    private apiService: ApiService,
-    private cartService: CartService,
-    private store: Store<fromApp.AppState>
-  ) {}
+  constructor(private router: Router, private store: Store<fromApp.AppState>) {}
 
   ngOnInit() {
-    if (this.authService.user.value) {
+    this.storeSub = this.store.select('auth').subscribe(authState => {
+      this.isLoading = authState.isLoading;
+      this.error = authState.authError;
+      this.haveUser = authState.user ? true : false;
+      this.showPermissionIssue = this.error && this.error.trim().length !== 0;
+    });
+
+    if (this.haveUser) {
       this.router.navigate(['/']);
     }
 
@@ -54,31 +54,7 @@ export class LoginComponent implements OnInit {
   }
 
   onLogin(email: string, password: string) {
-    this.isLoading = true;
-    this.authService
-      .login(email, password)
-      .pipe(
-        map(responseData => {
-          this.isLoading = false;
-          this.router.navigate(['/products']);
-          return responseData.localId;
-        }),
-        switchMap(userId => {
-          return this.apiService.getCart(userId);
-        })
-      )
-      .subscribe(
-        (cartProducts: CartProduct[]) => {
-          // this.cartService.setCart(cartProducts);
-          this.store.dispatch(CartActions.setCartProducts({ cartProducts }));
-        },
-        (errorMessage: string) => {
-          this.isLoading = false;
-          this.error = errorMessage;
-          this.showPermissionIssue = true;
-        }
-      );
-
+    this.store.dispatch(AuthActions.loginStart({ email, password }));
     this.loginForm.reset();
   }
 
@@ -98,6 +74,10 @@ export class LoginComponent implements OnInit {
   }
 
   onHandleError() {
-    this.error = null;
+    this.store.dispatch(AuthActions.clearError());
+  }
+
+  ngOnDestroy() {
+    this.storeSub.unsubscribe();
   }
 }

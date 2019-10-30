@@ -13,7 +13,6 @@ export const addProductToCart = createAction(
     description: string;
     imagePath: string;
     constPrice: number;
-    userId: string;
   }>()
 );
 
@@ -27,5 +26,9 @@ export const updatingCart = createAction(
   props<{ userId: string }>()
 );
 
-export const setSumProducts = createAction('[Cart] Set Sum Products');
-export const setProductsCost = createAction('[Cart] Set Products Cost');
+export const getCart = createAction(
+  '[Cart] Get Cart',
+  props<{ userId: string }>()
+);
+
+export const logoutCart = createAction('[Cart] Logout Cart');

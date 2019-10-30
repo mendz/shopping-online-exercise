@@ -35,6 +35,7 @@ export function productsReducer(
       ...state,
       isLoading: true,
       fetchError: null,
-    }))
+    })),
+    on(ProductsActions.productsLogout, state => ({ ...state, products: [] }))
   )(productsState, productsAction);
 }

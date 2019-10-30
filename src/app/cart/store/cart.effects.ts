@@ -2,7 +2,8 @@ import { createEffect, Actions, ofType } from '@ngrx/effects';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Store } from '@ngrx/store';
-import { switchMap, map, withLatestFrom } from 'rxjs/operators';
+import { switchMap, map, withLatestFrom, tap } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 import * as fromApp from '../../store/app.reducer';
 import * as CartActions from './cart.actions';
@@ -19,16 +20,13 @@ export class CartEffects {
   addProductToCart$ = createEffect(() =>
     this.actions$.pipe(
       ofType(CartActions.addProductToCart),
-      withLatestFrom(this.store.select('cart')),
-      map(([cartAction, cartState]) => {
-        const {
-          constPrice,
-          description,
-          imagePath,
-          productName,
-          userId,
-        } = cartAction;
+      withLatestFrom(this.store.select('cart'), this.store.select('auth')),
+      map(([cartAction, cartState, authState]) => {
+        const { constPrice, description, imagePath, productName } = cartAction;
         const { cartProducts } = cartState;
+        const {
+          user: { id: userId },
+        } = authState;
 
         const index = cartProducts.findIndex(
           cartProduct => cartProduct.name === productName
@@ -88,9 +86,11 @@ export class CartEffects {
     () =>
       this.actions$.pipe(
         ofType(CartActions.setCartProducts),
-        withLatestFrom(this.store.select('cart')),
-        switchMap(([cartAction, cartState]) => {
-          const userId = '';
+        withLatestFrom(this.store.select('cart'), this.store.select('auth')),
+        switchMap(([cartAction, cartState, authState]) => {
+          const {
+            user: { id: userId },
+          } = authState;
           const { cartProducts } = cartState;
           localStorage.setItem('cart', JSON.stringify(cartProducts));
 
@@ -153,6 +153,101 @@ export class CartEffects {
                 })
               );
           }
+        })
+      ),
+    { dispatch: false }
+  );
+
+  getCart$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CartActions.getCart),
+      switchMap(cartAction => {
+        const { userId } = cartAction;
+        // check if there cart in the local storage
+        // TODO: add a date to check if there a new cart in the DB
+        const cartData: [
+          {
+            amount: string;
+            costPrice: string;
+            description: string;
+            id: string;
+            imagePath: string;
+            name: string;
+          }
+        ] = JSON.parse(localStorage.getItem('cart'));
+
+        if (cartData) {
+          const cartProducts: CartProduct[] = [];
+          for (const cartProduct of cartData) {
+            const {
+              amount,
+              costPrice,
+              description,
+              id: cartId,
+              imagePath,
+              name,
+            } = cartProduct;
+            const loadedCartProduct = new CartProduct(
+              cartId,
+              name,
+              description,
+              imagePath,
+              +costPrice,
+              +amount
+            );
+            cartProducts.push(loadedCartProduct);
+          }
+
+          return of(CartActions.setCartProducts({ cartProducts }));
+        }
+
+        // if not load from DB
+        let params = new HttpParams();
+        params = params.append('orderBy', '"userId"');
+        params = params.append('equalTo', `"${userId}"`);
+        return this.http
+          .get<{ [key: string]: APICart }>(
+            'https://shopping-online-exercise.firebaseio.com/cart.json',
+            {
+              params,
+            }
+          )
+          .pipe(
+            map(responseData => {
+              // check if there a cart in the DB
+              if (Object.keys(responseData).length) {
+                const [cartKey, cartObj] = Object.entries(responseData)[0];
+                // get the firebase key of this specific cart
+                // this.cartKey = cartKey;
+                // return only the cart products
+                const cartProducts: CartProduct[] = cartObj.cartProducts.map(
+                  cartItem =>
+                    new CartProduct(
+                      cartObj.userId,
+                      cartItem.name,
+                      cartItem.description,
+                      cartItem.imagePath,
+                      +cartItem.costPrice,
+                      +cartItem.amount
+                    )
+                );
+
+                return CartActions.setCartProducts({ cartProducts });
+              } else {
+                return CartActions.setCartProducts({ cartProducts: [] });
+              }
+            })
+          );
+      })
+    )
+  );
+
+  logoutCart$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(CartActions.logoutCart),
+        tap(() => {
+          localStorage.removeItem('cart');
         })
       ),
     { dispatch: false }

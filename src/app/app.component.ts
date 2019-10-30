@@ -1,7 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { AuthService } from './auth/auth.service';
 import { Subscription } from 'rxjs';
-import { User } from './auth/user.model';
+import { Store } from '@ngrx/store';
+
+import * as fromApp from './store/app.reducer';
+import * as AuthActions from './auth/store/auth.actions';
 
 @Component({
   selector: 'app-root',
@@ -9,7 +11,7 @@ import { User } from './auth/user.model';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit, OnDestroy {
-  private activatedSubAuthLogin: Subscription;
+  private storeSub: Subscription;
   isLoggedIn = false;
 
   title = 'shopping-store';
@@ -18,18 +20,16 @@ export class AppComponent implements OnInit, OnDestroy {
     { path: '/charts', label: 'Charts' },
   ];
 
-  constructor(public authService: AuthService) {}
+  constructor(private store: Store<fromApp.AppState>) {}
 
   ngOnInit() {
-    this.authService.autoLogin();
-    this.activatedSubAuthLogin = this.authService.user.subscribe(
-      (user: User) => {
-        this.isLoggedIn = !!user;
-      }
-    );
+    this.store.dispatch(AuthActions.autoLogin());
+    this.storeSub = this.store.select('auth').subscribe(authState => {
+      this.isLoggedIn = !!authState.user;
+    });
   }
 
   ngOnDestroy() {
-    this.activatedSubAuthLogin.unsubscribe();
+    this.storeSub.unsubscribe();
   }
 }

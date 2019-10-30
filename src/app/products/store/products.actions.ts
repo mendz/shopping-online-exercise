@@ -15,3 +15,5 @@ export const setProducts = createAction(
   '[Products] Set Products',
   props<{ products: Product[] }>()
 );
+
+export const productsLogout = createAction('[Products] Products Logout');

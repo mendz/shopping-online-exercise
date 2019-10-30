@@ -3,7 +3,6 @@ import * as Highcharts from 'highcharts';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 
-import { CartService } from '../cart/cart.service';
 import { CartProduct } from '../cart/cart-product.model';
 import * as fromApp from '../store/app.reducer';
 
@@ -27,10 +26,7 @@ export class ChartsComponent implements OnInit, OnDestroy {
   cartProducts: CartProduct[];
   private storeSub: Subscription;
 
-  constructor(
-    private cartService: CartService,
-    private store: Store<fromApp.AppState>
-  ) {}
+  constructor(private store: Store<fromApp.AppState>) {}
 
   ngOnInit() {
     this.storeSub = this.store.select('cart').subscribe(cartState => {
