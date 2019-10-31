@@ -1,8 +1,13 @@
 .card {
   max-width: 200px;
   height: 500px;
+  transition: all 0.2s ease-in-out;
 }
 
 .card > * {
   flex: 1;
+}
+
+.card:hover {
+  box-shadow: var(--card-shadow-hover);
 }

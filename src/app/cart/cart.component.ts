@@ -1,10 +1,15 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Store } from '@ngrx/store';
+import {
+  trigger,
+  state,
+  style,
+  transition,
+  animate,
+} from '@angular/animations';
 
 import { CartProduct } from './cart-product.model';
-import { ApiService } from '../shared/api.service';
-import { AuthService } from '../auth/auth.service';
 import * as fromApp from '../store/app.reducer';
 import * as CartActions from './store/cart.actions';
 
@@ -12,42 +17,48 @@ import * as CartActions from './store/cart.actions';
   selector: 'app-cart',
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.css'],
+  animations: [
+    trigger('itemRemove', [
+      state(
+        'in',
+        style({
+          opacity: 1,
+          transform: 'translateX(0)',
+        })
+      ),
+      transition('void => *', [
+        style({
+          opacity: 0,
+          transform: 'translateX(-100px)',
+        }),
+        animate(300),
+      ]),
+      transition('* => void', [
+        animate(300),
+        style({
+          opacity: 0,
+          transform: 'translateX(100px)',
+        }),
+      ]),
+    ]),
+  ],
 })
 export class CartComponent implements OnInit, OnDestroy {
   products: CartProduct[];
   productsCost = 0;
   private storeSub: Subscription;
 
-  constructor(
-    private apiService: ApiService,
-    private authService: AuthService,
-    private store: Store<fromApp.AppState>
-  ) {}
+  constructor(private store: Store<fromApp.AppState>) {}
 
   ngOnInit() {
     this.storeSub = this.store.select('cart').subscribe(cartState => {
       this.products = cartState.cartProducts;
       this.productsCost = cartState.productsCost;
     });
-    // this.products = this.cartService.getCartProducts();
-    // this.activatedSubProductsChange = this.cartService.cartProductsChange.subscribe(
-    //   (cartProducts: CartProduct[]) => {
-    //     this.products = cartProducts;
-    //   }
-    // );
-
-    // this.productsCost = this.cartService.getProductsCost();
-    // this.activatedSubCost = this.cartService.productsCost.subscribe(
-    //   (cost: number) => {
-    //     this.productsCost = cost;
-    //   }
-    // );
   }
 
   onRemoveProduct(productName: string) {
-    // this.cartService.removeFromCart(productName);
     this.store.dispatch(CartActions.removeProductFromCart({ productName }));
-    // this.apiService.updateCart(userId, this.products);
   }
 
   ngOnDestroy() {
