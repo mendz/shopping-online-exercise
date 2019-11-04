@@ -9,7 +9,7 @@ export interface State {
   isLoading: boolean;
 }
 
-const initialState: State = {
+export const initialState: State = {
   user: null,
   authError: null,
   isLoading: false,

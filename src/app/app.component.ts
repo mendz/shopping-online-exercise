@@ -14,7 +14,6 @@ export class AppComponent implements OnInit, OnDestroy {
   private storeSub: Subscription;
   isLoggedIn = false;
 
-  title = 'shopping-store';
   navLinks = [
     { path: '/products', label: 'Products' },
     { path: '/charts', label: 'Charts' },

@@ -1,7 +1,11 @@
-<div class="backdrop" (click)="onClose()"></div>
-<div class="alert-container" [@modal]>
-  <p>{{ message }}</p>
-  <div class="controls">
-    <button mat-raised-button color="primary" (click)="onClose()">Close</button>
+<div *ngIf="message">
+  <div class="backdrop" (click)="onClose()"></div>
+  <div class="alert-container" [@modal]>
+    <p>{{ message }}</p>
+    <div class="controls">
+      <button mat-raised-button color="primary" (click)="onClose()">
+        Close
+      </button>
+    </div>
   </div>
 </div>
