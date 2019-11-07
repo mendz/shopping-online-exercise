@@ -12,6 +12,7 @@ An exercise site to practice _Angular 8_.
 - Directives.
 - Pipes.
 - Observers.
+- A few tests.
 
 ### Links:
 
